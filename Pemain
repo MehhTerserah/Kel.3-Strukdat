@@ -1,0 +1,107 @@
+#include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
+
+using namespace std;
+
+typedef struct Kartu
+{
+  int JenisKartu;
+  int NoKartu;
+  int NoPemain;
+}Kartu;
+
+typedef struct TumpukanKartu
+{
+  struct Kartu K;
+  struct TumpukanKartu * next;
+}TumpukanKartu;
+
+struct TumpukanKartu * Bandar;
+struct TumpukanKartu * Slot;
+
+struct TumpukanKartu * BuatNodeBaru()
+{
+  TumpukanKartu* NodeBaru= (TumpukanKartu*) malloc(sizeof(TumpukanKartu));
+  return NodeBaru;
+}
+
+struct TumpukanKartu * Push(struct TumpukanKartu *  PtrPush, int JenisKartu, int NoKartu,int NoPemain)
+{
+  struct TumpukanKartu * PtrBef;
+  PtrBef = PtrPush;
+  PtrPush = BuatNodeBaru();
+  PtrPush->next = PtrBef;
+  PtrPush->K.JenisKartu= JenisKartu;
+  PtrPush->K.NoKartu= NoKartu;
+  PtrPush->K.NoPemain= NoPemain;
+  PtrBef = PtrPush;
+  return PtrPush;
+}
+
+Kartu  Pop(struct TumpukanKartu * PtrPush)
+{
+  Kartu K;
+  K = PtrPush->K;
+  Slot = PtrPush->next;
+  return K;
+}
+
+typedef struct Pemain
+{
+  struct TumpukanKartu * KartuPemain;
+  int NoPemain;
+  int Status;
+}Pemain;
+
+struct TumpukanKartu * Cangkul(Pemain A){
+  Kartu K;
+  K = Pop(Bandar);
+  Bandar=Slot;
+  A.KartuPemain = Push(A.KartuPemain,K.JenisKartu,K.NoKartu,A.NoPemain);
+  return A.KartuPemain;
+}
+
+void tampilkan(Pemain A){
+  printf("Kartu pemain %d\n",A.NoPemain);
+  while(A.KartuPemain){
+    printf("%d %d \n",A.KartuPemain->K.JenisKartu,A.KartuPemain->K.NoKartu);
+    A.KartuPemain = A.KartuPemain->next;    
+  }
+}
+
+int main()
+{
+  // struct TumpukanKartu * Trial;
+  Kartu K;
+  Bandar=NULL;
+  // KartuPemain1 = NULL;
+  // KartuPemain2 = NULL;
+  Pemain Pemain1;
+  Pemain Pemain2;
+  Pemain1.KartuPemain=NULL;
+  Pemain1.NoPemain=1;
+  Pemain2.KartuPemain=NULL;
+  Pemain2.NoPemain=2;
+  
+  for(int i=1;i<5;i++){
+    for(int j=2;j<15;j++){
+      Bandar = Push(Bandar, i, j, 0);
+    }
+  }
+  
+  for(int i=0;i<6;i++){
+    Pemain1.KartuPemain=Cangkul(Pemain1);
+    Pemain2.KartuPemain=Cangkul(Pemain2);
+  }
+  
+  tampilkan(Pemain1);
+  printf("\n\n\n");
+  tampilkan(Pemain2);
+  printf("\n\n\n");
+  
+  K=Pop(Pemain1.KartuPemain);
+  Pemain1.KartuPemain=Slot;
+  tampilkan(Pemain1);
+  
+}
