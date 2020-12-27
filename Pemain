@@ -4,15 +4,13 @@
 
 using namespace std;
 
-typedef struct Kartu
-{
+typedef struct Kartu{
   int JenisKartu;
   int NoKartu;
   int NoPemain;
 }Kartu;
 
-typedef struct TumpukanKartu
-{
+typedef struct TumpukanKartu{
   struct Kartu K;
   struct TumpukanKartu * next;
 }TumpukanKartu;
@@ -20,14 +18,12 @@ typedef struct TumpukanKartu
 struct TumpukanKartu * Bandar;
 struct TumpukanKartu * Slot;
 
-struct TumpukanKartu * BuatNodeBaru()
-{
+struct TumpukanKartu * BuatNodeBaru(){
   TumpukanKartu* NodeBaru= (TumpukanKartu*) malloc(sizeof(TumpukanKartu));
   return NodeBaru;
 }
 
-struct TumpukanKartu * Push(struct TumpukanKartu *  PtrPush, int JenisKartu, int NoKartu,int NoPemain)
-{
+struct TumpukanKartu * Push(struct TumpukanKartu *  PtrPush, int JenisKartu, int NoKartu,int NoPemain){
   struct TumpukanKartu * PtrBef;
   PtrBef = PtrPush;
   PtrPush = BuatNodeBaru();
@@ -39,16 +35,14 @@ struct TumpukanKartu * Push(struct TumpukanKartu *  PtrPush, int JenisKartu, int
   return PtrPush;
 }
 
-Kartu  Pop(struct TumpukanKartu * PtrPush)
-{
+Kartu  Pop(struct TumpukanKartu * PtrPush){
   Kartu K;
   K = PtrPush->K;
   Slot = PtrPush->next;
   return K;
 }
 
-typedef struct Pemain
-{
+typedef struct Pemain{
   struct TumpukanKartu * KartuPemain;
   int NoPemain;
   int Status;
@@ -70,6 +64,32 @@ void tampilkan(Pemain A){
   }
 }
 
+void cek(struct TumpukanKartu * Dek){
+  while(Dek){
+    printf("\n%d %d \n", Dek->K.JenisKartu,Dek->K.NoKartu);
+    Dek=Dek->next;
+  }
+}
+
+typedef struct Arena{
+  Kartu K;
+  int UrutanPemain;
+}Arena;
+
+void KocokBandar(){
+  int kartu[52];
+  for(int i=0; i<52;i++){
+    kartu[i]=i;
+  }
+  for(int i=0;i<52;i++){
+    int  j = i + rand()%(52-i);
+    int t = kartu[j];
+    kartu[j]=kartu[i];
+    kartu[i]=t;
+    Bandar = Push(Bandar, kartu[i]/13+1,kartu[i]%14+1,0);
+  }
+}
+
 int main()
 {
   // struct TumpukanKartu * Trial;
@@ -84,11 +104,8 @@ int main()
   Pemain2.KartuPemain=NULL;
   Pemain2.NoPemain=2;
   
-  for(int i=1;i<5;i++){
-    for(int j=2;j<15;j++){
-      Bandar = Push(Bandar, i, j, 0);
-    }
-  }
+  KocokBandar();
+  // cek(Bandar);
   
   for(int i=0;i<6;i++){
     Pemain1.KartuPemain=Cangkul(Pemain1);
@@ -104,4 +121,8 @@ int main()
   Pemain1.KartuPemain=Slot;
   tampilkan(Pemain1);
   
+  // printf("Acak Kartu");
+  // Bandar=KocokKartu(Bandar, 5);
+  
+
 }
