@@ -71,11 +71,6 @@ void cek(struct TumpukanKartu * Dek){
   }
 }
 
-typedef struct Arena{
-  Kartu K;
-  int UrutanPemain;
-}Arena;
-
 void KocokBandar(){
   int kartu[52];
   for(int i=0; i<52;i++){
@@ -90,15 +85,29 @@ void KocokBandar(){
   }
 }
 
+typedef struct Arena{
+  Kartu KartuArena;
+  int UrutanPemain;
+}Arena;
+
+Arena Situasi(Arena A,Pemain N,Kartu K){
+  A.UrutanPemain+=N.NoPemain;
+  if(A.UrutanPemain>4){
+    A.UrutanPemain=1;
+  }
+  A.KartuArena=K;
+  printf("\nPemain %d memasukkan kartu %d %d\n",N.NoPemain,K.JenisKartu,K.NoKartu);
+  return A;
+}
+
 int main()
 {
-  // struct TumpukanKartu * Trial;
   Kartu K;
   Bandar=NULL;
-  // KartuPemain1 = NULL;
-  // KartuPemain2 = NULL;
+  Arena Meja;
   Pemain Pemain1;
   Pemain Pemain2;
+  
   Pemain1.KartuPemain=NULL;
   Pemain1.NoPemain=1;
   Pemain2.KartuPemain=NULL;
@@ -120,9 +129,5 @@ int main()
   K=Pop(Pemain1.KartuPemain);
   Pemain1.KartuPemain=Slot;
   tampilkan(Pemain1);
-  
-  // printf("Acak Kartu");
-  // Bandar=KocokKartu(Bandar, 5);
-  
-
+  Meja = Situasi(Meja,Pemain1,K);
 }
