@@ -31,7 +31,6 @@ struct TumpukanKartu * Push(struct TumpukanKartu *  PtrPush, int JenisKartu, int
   PtrPush->K.JenisKartu= JenisKartu;
   PtrPush->K.NoKartu= NoKartu;
   PtrPush->K.NoPemain= NoPemain;
-  PtrBef = PtrPush;
   return PtrPush;
 }
 
@@ -96,7 +95,7 @@ Arena Situasi(Arena A,Pemain N,Kartu K){
     A.UrutanPemain=1;
   }
   A.KartuArena=K;
-  printf("\nPemain %d memasukkan kartu %d %d\n",N.NoPemain,K.JenisKartu,K.NoKartu);
+  printf("\nPemain %d memasukkan kartu \n%d %d\nke meja\n",N.NoPemain,K.JenisKartu,K.NoKartu);
   return A;
 }
 
@@ -107,7 +106,7 @@ int main()
   Arena Meja;
   Pemain Pemain1;
   Pemain Pemain2;
-  
+
   Pemain1.KartuPemain=NULL;
   Pemain1.NoPemain=1;
   Pemain2.KartuPemain=NULL;
@@ -128,6 +127,7 @@ int main()
   
   K=Pop(Pemain1.KartuPemain);
   Pemain1.KartuPemain=Slot;
-  tampilkan(Pemain1);
+  
   Meja = Situasi(Meja,Pemain1,K);
+  tampilkan(Pemain1);
 }
